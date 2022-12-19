@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "particule.io/formations/cmdlist",
+  "description": "List of commands",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["cmd", "description"],
+    "properties": {
+      "description": {
+        "type": "string",
+        "description": "description of the command to execute"
+      },
+      "cmd": {
+        "type": "string",
+        "description": "command to execute"
+      }
+    }
+  }
+}

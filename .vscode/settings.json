@@ -1,0 +1,7 @@
+{
+	"yaml.validate": true,
+	"yaml.schemas":
+		{
+			"./files/cmd.schema.json": "files/*.yaml"
+		}
+}
