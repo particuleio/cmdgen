@@ -8,31 +8,11 @@ From a description of workshop steps:
 It can be extended for other usecases
 
 - [CmdGen](#cmdgen)
-- [How it works ?](#how-it-works-)
-  - [generate bash script from yaml description](#generate-bash-script-from-yaml-description)
-  - [start scenario](#start-scenario)
 - [Example](#example)
   - [generate bash script](#generate-bash-script)
-  - [start scenario](#start-scenario-1)
+  - [start scenario](#start-scenario)
 - [What's next ?](#whats-next-)
 
-
-
-# How it works ?
-## generate bash script from yaml description
-It generates bash script based on go-template.
-``` go-template
-#!/bin/bash
-
-{{ range .Items }}
-  {{- range (split .Description) -}}
-    {{- printf "# %s\n" . }}
-  {{- end -}}
-  {{- println .Cmd }}
-{{ end }} 
-```
-## start scenario
-Start scenario step by step
 
 # Example
 ``` yaml
