@@ -142,5 +142,8 @@ func main() {
 
 # What's next ?
 - Add other parameters to command structure
+- Add option to prune/clean environment
+- Add Makefile
+- Automate binary creation
 - Update Doc
 - Cover more unit tests
