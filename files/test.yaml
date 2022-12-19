@@ -13,8 +13,9 @@
   cmd: |-
     echo '
     FROM fedora:36
-    RUN ls
-    EXPOSE 80
+    RUN dnf update -y
+    RUN dnf install nginx -y
+    EXPOSE 443
     CMD ["nginx", "-g", "daemon off;"]
     ' > Dockerfile-01
 -

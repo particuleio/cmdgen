@@ -7,5 +7,5 @@ const (
 )
 
 func main() {
-	cmdgen.GenBashScript(dummyTestFile)
+	cmdgen.StartScenario(dummyTestFile)
 }
