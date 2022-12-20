@@ -1,10 +1,11 @@
 package main
 
 import (
-	"cmdgen/pkg/cmdgen"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/particuleio/cmdgen/pkg/cmdgen"
 )
 
 func main() {

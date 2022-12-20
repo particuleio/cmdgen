@@ -84,7 +84,7 @@ func parseFile(filePath string) (ts templateStructure, err error) {
 }
 
 func createFile(filePath string) (file *os.File, err error) {
-	fileName := path.Base(filePath) + ScriptFileExt
+	fileName := path.Base(strings.Split(filePath, ".")[0]) + ScriptFileExt
 	if file, err = os.Create(fileName); err != nil {
 		return
 	}
