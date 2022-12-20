@@ -22,7 +22,7 @@ func main() {
 
 	msgErr := fmt.Sprintf(`Usage: cmdgen COMMAND PATH
   COMMAND   one of %v
-  PATH      of the yaml config file`, argList)
+  PATH      path of the yaml config file`, argList)
 
 	if len(os.Args) < 2 {
 		fmt.Println(msgErr)
@@ -36,7 +36,7 @@ func main() {
 	}
 
 	if len(os.Args) < 3 {
-		fmt.Printf("missing path.\n%s\n", msgErr)
+		fmt.Printf("Missing path.\n%s\n", msgErr)
 		return
 	}
 

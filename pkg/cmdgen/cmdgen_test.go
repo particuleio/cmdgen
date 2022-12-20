@@ -97,11 +97,12 @@ func TestParseFile(t *testing.T) {
 	t.Logf("PASS: parseFile on valid file")
 }
 
-func TestGenBashScript(t *testing.T) {
-	if err := GenBashScript(dummyTestFile); err != nil {
-		log.Println(err.Error())
-	}
-}
+// func TestGenBashScript(t *testing.T) {
+// 	if err := GenBashScript(dummyTestFile); err != nil {
+// 		log.Println(err.Error())
+// 	}
+// }
+
 func TestStartScenario(t *testing.T) {
 	_ = StartScenario(dummyTestFile)
 }
