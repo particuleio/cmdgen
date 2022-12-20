@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"reflect"
-	"strings"
 	"testing"
 
 	"gopkg.in/yaml.v3"
@@ -13,24 +12,6 @@ import (
 const (
 	dummyTestFile = "../../files/test.yaml"
 )
-
-func TestTemplateFile(t *testing.T) {
-	// It should exist
-	info, err := os.Stat(TemplateFile)
-	if os.IsNotExist(err) {
-		t.Fatalf("TemplateFile does not exist")
-	}
-
-	// It should not be a directory
-	if info.IsDir() {
-		t.Fatalf("TemplateFile expected to be a file. Got a dir")
-	}
-
-	// It should end with TemplateFileExt
-	if !strings.HasSuffix(info.Name(), TemplateFileExt) {
-		t.Fatalf("TemplateFile does not end with %s", TemplateFileExt)
-	}
-}
 
 func TestCheckFile(t *testing.T) {
 	var err error

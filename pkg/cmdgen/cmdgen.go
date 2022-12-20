@@ -15,12 +15,34 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type cmdItem struct {
+	Cmd         string `yaml:"cmd"`
+	Description string `yaml:"description"`
+}
+
+type templateStructure struct {
+	Scenario []cmdItem `yaml:"scenario"`
+	Clean    []string  `yaml:"clean"`
+}
+
 const (
-	TemplateFileExt  = ".go.tpl"
-	TemplateFileName = "script" + TemplateFileExt
-	TemplateFile     = "../../templates/" + TemplateFileName
-	ScriptFileExt    = ".bash"
-	ShellToUse       = "bash"
+	ScriptFileExt = ".bash"
+	ShellToUse    = "bash"
+	Template      = `#!/bin/bash
+
+{{ range .Scenario }}
+	{{- range (split .Description) -}}
+		{{- printf "# %s\n" . }}
+	{{- end -}}
+	{{- println .Cmd }}
+{{ end }} 
+
+## To clean workspace run these commands:
+{{- range .Clean }}
+# {{ . }}
+{{- end }}
+
+`
 )
 
 var (
@@ -31,16 +53,6 @@ var (
 	colorOutput      = color.New(color.FgCyan)
 	colorError       = color.New(color.FgRed)
 )
-
-type cmdItem struct {
-	Cmd         string `yaml:"cmd"`
-	Description string `yaml:"description"`
-}
-
-type templateStructure struct {
-	Scenario []cmdItem `yaml:"scenario"`
-	Clean    []string  `yaml:"clean"`
-}
 
 func (c cmdItem) String() string {
 	return fmt.Sprintf(`{"cmd": "%s", "description": "%s"}`, c.Cmd, c.Description)
@@ -84,7 +96,7 @@ func parseFile(filePath string) (ts templateStructure, err error) {
 }
 
 func createFile(filePath string) (file *os.File, err error) {
-	fileName := path.Base(strings.Split(filePath, ".")[0]) + ScriptFileExt
+	fileName := strings.Split(path.Base(filePath), ".")[0] + ScriptFileExt
 	if file, err = os.Create(fileName); err != nil {
 		return
 	}
@@ -92,17 +104,17 @@ func createFile(filePath string) (file *os.File, err error) {
 	return
 }
 
-func writeFormatted(file io.Writer, cmdList []cmdItem) (err error) {
-	t, err := template.New(TemplateFileName).Funcs(template.FuncMap{
+func writeFormatted(file io.Writer, ts templateStructure) (err error) {
+	t, err := template.New("script").Funcs(template.FuncMap{
 		"split": func(text string) []string {
 			return strings.Split(text, "\n")
 		},
-	}).ParseFiles(TemplateFile)
+	}).Parse(Template)
 	if err != nil {
 		return
 	}
 	wr := bufio.NewWriter(file)
-	if err = t.Execute(wr, map[string][]cmdItem{"Items": cmdList}); err != nil {
+	if err = t.Execute(wr, ts); err != nil {
 		return
 	}
 	wr.Flush()
@@ -124,7 +136,7 @@ func GenBashScript(filePath string) (err error) {
 	defer file.Close()
 
 	// Write formatted template
-	writeFormatted(file, ts.Scenario)
+	writeFormatted(file, ts)
 	return nil
 }
 
