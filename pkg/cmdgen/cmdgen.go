@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 	"text/template"
 
@@ -55,8 +56,8 @@ func (c cmdItem) printCmd() {
 	colorCmd.Println(c.Cmd)
 }
 
-func checkFile(path string) error {
-	info, err := os.Stat(path)
+func checkFile(filePath string) error {
+	info, err := os.Stat(filePath)
 	if os.IsNotExist(err) {
 		return err
 	}
@@ -68,13 +69,13 @@ func checkFile(path string) error {
 	return nil
 }
 
-func parseFile(path string) (ts templateStructure, err error) {
-	if err = checkFile(path); err != nil {
+func parseFile(filePath string) (ts templateStructure, err error) {
+	if err = checkFile(filePath); err != nil {
 		return
 	}
 
 	var content []byte
-	if content, err = os.ReadFile(path); err != nil {
+	if content, err = os.ReadFile(filePath); err != nil {
 		return
 	}
 
@@ -82,8 +83,8 @@ func parseFile(path string) (ts templateStructure, err error) {
 	return
 }
 
-func createFile() (file *os.File, err error) {
-	fileName := strings.Split(TemplateFileName, ".")[0] + ScriptFileExt
+func createFile(filePath string) (file *os.File, err error) {
+	fileName := path.Base(filePath) + ScriptFileExt
 	if file, err = os.Create(fileName); err != nil {
 		return
 	}
@@ -108,16 +109,16 @@ func writeFormatted(file io.Writer, cmdList []cmdItem) (err error) {
 	return
 }
 
-func GenBashScript(path string) (err error) {
+func GenBashScript(filePath string) (err error) {
 	// parse template file
 	var ts templateStructure
-	if ts, err = parseFile(path); err != nil {
+	if ts, err = parseFile(filePath); err != nil {
 		return
 	}
 
 	// create new file
 	var file *os.File
-	if file, err = createFile(); err != nil {
+	if file, err = createFile(filePath); err != nil {
 		return
 	}
 	defer file.Close()
@@ -167,16 +168,16 @@ func processCmd(index int, cmd cmdItem) error {
 	return nil
 }
 
-func CleanWorkspace(path string) (err error) {
-	ts, err := parseFile(path)
+func CleanWorkspace(filePath string) (err error) {
+	ts, err := parseFile(filePath)
 	for _, cmd := range ts.Clean {
 		exec.Command(ShellToUse, "-c", cmd).Run()
 	}
 	return
 }
 
-func StartScenario(path string) (err error) {
-	ts, err := parseFile(path)
+func StartScenario(filePath string) (err error) {
+	ts, err := parseFile(filePath)
 
 	for index, cmd := range ts.Scenario {
 		fmt.Println("-------------")
