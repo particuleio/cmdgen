@@ -167,7 +167,7 @@ func processCmd(index int, cmd cmdItem) error {
 	return nil
 }
 
-func cleanWorkspace(path string) (err error) {
+func CleanWorkspace(path string) (err error) {
 	ts, err := parseFile(path)
 	for _, cmd := range ts.Clean {
 		exec.Command(ShellToUse, "-c", cmd).Run()
