@@ -105,3 +105,7 @@ func TestGenBashScript(t *testing.T) {
 func TestStartScenario(t *testing.T) {
 	_ = StartScenario(dummyTestFile)
 }
+
+func TestCleanWorkspace(t *testing.T) {
+	_ = CleanWorkspace(dummyTestFile)
+}
