@@ -14,8 +14,7 @@ help: # Show this help
 
 
 deps: # Install dependencies
-	go get github.com/fatih/color
-	go get gopkg.in/yaml.v3
+	go mod download
 
 build: # Build project
 	$(call build_project)
