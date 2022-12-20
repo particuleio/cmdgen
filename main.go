@@ -1,6 +1,6 @@
 package main
 
-import "cmdgen/cmd/cmdgen"
+import "cmdgen/pkg/cmdgen"
 
 const (
 	dummyTestFile = "files/test.yaml"

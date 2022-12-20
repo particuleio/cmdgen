@@ -1,34 +1,38 @@
 ---
--
-  description: list images
-  cmd: docker images
--
-  description: list containers
-  cmd: docker container ls
--
-  description: notice that initially there are no images nor containers
-  cmd: ''
--
-  description: create dockerfile
-  cmd: |-
-    echo '
-    FROM fedora:36
-    RUN dnf update -y
-    RUN dnf install nginx -y
-    EXPOSE 443
-    CMD ["nginx", "-g", "daemon off;"]
-    ' > Dockerfile-01
--
-  description: build first image
-  cmd: docker build -f Dockerfile-01 -t mynginx .
--
-  description: List images & containers
-  cmd: |-
-    docker images
-    docker container ls
--
-  description: Notice that there is one image created and no containers
-  cmd: ""
--
-  description: Inteded error
-  cmd: ls NON_EXISTING_FILE
+scenario:
+  -
+    description: list images
+    cmd: docker images
+  -
+    description: list containers
+    cmd: docker container ls
+  -
+    description: notice that initially there are no images nor containers
+    cmd: ''
+  -
+    description: create dockerfile
+    cmd: |-
+      echo '
+      FROM fedora:36
+      RUN dnf update -y
+      RUN dnf install nginx -y
+      EXPOSE 443
+      CMD ["nginx", "-g", "daemon off;"]
+      ' > Dockerfile-01
+  -
+    description: build first image
+    cmd: docker build -f Dockerfile-01 -t mynginx .
+  -
+    description: List images & containers
+    cmd: |-
+      docker images
+      docker container ls
+  -
+    description: Notice that there is one image created and no containers
+    cmd: ""
+  -
+    description: Inteded error
+    cmd: ls NON_EXISTING_FILE
+clean:
+  - rm -f Dockerfile-01
+  - docker rmi mynginx

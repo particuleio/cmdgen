@@ -2,18 +2,31 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "particule.io/formations/cmdlist",
   "description": "List of commands",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "required": ["cmd", "description"],
-    "properties": {
-      "description": {
+  "type": "object",
+  "properties": {
+    "scenario": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cmd", "description"],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "description of the command to execute"
+          },
+          "cmd": {
+            "type": "string",
+            "description": "command to execute"
+          }
+        }
+      }
+    },
+    "clean": {
+      "type": "array",
+      "description": "clean workspace",
+      "items": {
         "type": "string",
-        "description": "description of the command to execute"
-      },
-      "cmd": {
-        "type": "string",
-        "description": "command to execute"
+        "description": "Commands to clean workspace after executing the scenario. These commands should not return an error."
       }
     }
   }

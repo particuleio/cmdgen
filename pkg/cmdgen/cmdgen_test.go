@@ -76,20 +76,23 @@ func TestParseFile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err.Error())
 	}
-	// defer tmpFile.Close()
-	// defer os.Remove(tmpFile.Name())
+	defer tmpFile.Close()
+	defer os.Remove(tmpFile.Name())
 
 	log.Printf("Temp File Name %s", tmpFile.Name())
 
 	// valid input
-	cmdList := []cmdItem{
-		{
-			Cmd:         "cmdddd",
-			Description: "Descriptionnn",
+	ts := templateStructure{
+		Scenario: []cmdItem{
+			{
+				Cmd:         "cmdddd",
+				Description: "Descriptionnn",
+			},
 		},
+		Clean: []string{},
 	}
 
-	data, err := yaml.Marshal(&cmdList)
+	data, err := yaml.Marshal(&ts)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
@@ -99,16 +102,16 @@ func TestParseFile(t *testing.T) {
 	}
 
 	got, err := parseFile(tmpFile.Name())
-	if err != nil || !reflect.DeepEqual(cmdList, got) {
-		t.Fatalf("FAIL: parseFile(%s), expected(%v, %v), got(%v, %v)", tmpFile.Name(), cmdList, nil, got, err)
+	if err != nil || !reflect.DeepEqual(ts, got) {
+		t.Fatalf("FAIL: parseFile(%s), expected(%v, %v), got(%v, %v)", tmpFile.Name(), ts, nil, got, err)
 	}
 	t.Logf("PASS: parseFile on valid file")
 
 	// should not return the same cmdList
 	got, _ = parseFile(tmpFile.Name())
-	cmdList[0].Cmd = cmdList[0].Cmd + "123qwewqe"
-	if reflect.DeepEqual(cmdList, got) {
-		t.Fatalf("FAIL: parseFile(%s), expected(%v, %v), got(%v, %v)", tmpFile.Name(), cmdList, nil, got, err)
+	ts.Scenario[0].Cmd = ts.Scenario[0].Cmd + "123qwewqe"
+	if reflect.DeepEqual(ts.Scenario, got) {
+		t.Fatalf("FAIL: parseFile(%s), expected(%v, %v), got(%v, %v)", tmpFile.Name(), ts.Scenario, nil, got, err)
 	}
 	t.Logf("PASS: parseFile on valid file")
 }
