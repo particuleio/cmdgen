@@ -32,6 +32,7 @@ scenario:
     description: |-
       Notice that there are two images:
       - registry.fedoraproject.org/fedora:36 the base image pulled from fedora registry
+      - mynginx: the image that you built
     cmd: ''
   -
     description: Run container
